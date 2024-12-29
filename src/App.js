@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './_app.scss';
 import { RecuperarScreen } from "./screens/recuperarScreen/RecuperarScreen";
 import { MovimientosScreen } from "./screens/movimientosScreen/MovimientosScreen";
+import { CategoriasScreen } from "./screens/categoriasScreen/CategoriasScreen";
 function App() {
   return (
     <BrowserRouter>
@@ -18,6 +19,7 @@ function App() {
           <Route path="/signup" element={<SignUpScreen />} />
           <Route path="/recuperar" element={<RecuperarScreen />} />
           <Route path="/movimientos" element={<MovimientosScreen />} />
+          <Route path="/categorias" element={<CategoriasScreen />} />
       </Routes>
     </BrowserRouter>
   );
