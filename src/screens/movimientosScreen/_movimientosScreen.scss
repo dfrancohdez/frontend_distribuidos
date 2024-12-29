@@ -1,0 +1,22 @@
+@import '../../_app.scss';
+@import 'datatables.net-bs5';
+
+.archivo__container{
+    background-color: white;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.movimientos__tabla--container{
+    background-color: white;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 15px;
+}
+.movimientos__grafica--container{
+    background-color: white;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 15px;
+}

@@ -1,0 +1,14 @@
+$color1:#007279;
+$color2:#005b5f;
+$color3:#121641;
+$color4:#eee;
+
+body{
+    background-color: $color4;
+
+}
+.icono__grande{
+    max-width: 200px;
+    object-fit: contain;
+    border-radius: 15px;
+}

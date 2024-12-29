@@ -1,0 +1,23 @@
+@import '../../_app.scss';
+.navBar__container{
+    display: flex;
+    background-color: $color3;
+    color: white;
+    justify-content: space-around;
+    align-items: center;
+    height: 60px;
+}
+.navBar__items{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    .navBar__perfil{
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        h6{
+            margin: 0;
+
+        }
+    }
+}
