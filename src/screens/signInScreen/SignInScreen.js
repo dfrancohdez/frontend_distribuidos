@@ -96,20 +96,25 @@ export const SignInScreen = ({ setIsAuthenticated }) => {
                   console.log('Token de acceso:', result.getAccessToken().getJwtToken());
                   
                   resolve(result);
+                  saveTokens({
+                    idToken: result.getIdToken().getJwtToken(),
+                    accessToken: result.getAccessToken().getJwtToken(),
+                    username:username
+                  });
+                  setIsAuthenticated(true);
+                  window.location.href = window.location.href;
+                  
+                    
                 },
                 onFailure: (err) => {
                   reject(err);
                 },
               });
             });
-            saveTokens({
-                idToken: result.getIdToken().getJwtToken(),
-                accessToken: result.getAccessToken().getJwtToken(),
-                username:username
-              });
             setIsAuthenticated(true);
-
-            navigate('/home');
+            window.location.href = window.location.href;
+            
+            
           } catch (err) {
             setError(err.message || 'Error durante el inicio de sesión');
           }

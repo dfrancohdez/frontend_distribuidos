@@ -21,6 +21,8 @@ export const RecuperarScreen = () => {
     }
 
     setValidated(true);
+
+    
   };
 
     return (

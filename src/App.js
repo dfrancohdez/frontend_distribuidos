@@ -11,29 +11,65 @@ import { RecuperarScreen } from "./screens/recuperarScreen/RecuperarScreen";
 import { MovimientosScreen } from "./screens/movimientosScreen/MovimientosScreen";
 import { CategoriasScreen } from "./screens/categoriasScreen/CategoriasScreen";
 import React, { useState, useEffect } from 'react';
+import { ConfirmarScreen } from "./screens/confirmarScreen/ConfirmarScreen";
 
 
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Indicador de carga
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
     if (token) {
       setIsAuthenticated(true);
+       // Autenticación cargada
     }
+    setIsLoading(false);
   }, []);
+  console.log(isAuthenticated)
+  if (isLoading) {
+    return <div>Cargando...</div>;
+  }
   return (
     <BrowserRouter>
       <Routes>
-          {/* <Route index element={<HomeScreen />} /> */}
-          <Route path="/" element={ isAuthenticated ? <Navigate to="/home" />: <SignInScreen setIsAuthenticated={setIsAuthenticated} />} />
-          <Route path="/signin" element={<SignInScreen />} />
-          <Route path="/signup" element={<SignUpScreen />} />
-          <Route path="/recuperar" element={isAuthenticated ? <RecuperarScreen />: <Navigate to="/" />} />
-          <Route path="/movimientos" element={isAuthenticated ? <MovimientosScreen /> : <Navigate to="/" />} />
-          <Route path="/categorias" element={isAuthenticated ? <CategoriasScreen /> : <Navigate to="/" />} />
-          <Route path="/home" element={isAuthenticated ? <HomeScreen /> : <Navigate to="/" />} />
+        {/* Redirige a /signin si no está autenticado, de lo contrario, va a /home */}
+        <Route 
+          path="/" 
+          element={isAuthenticated ? <Navigate to="/home" /> : <SignInScreen setIsAuthenticated={setIsAuthenticated} />} 
+        />
+        
+        {/* Rutas protegidas */}
+        <Route 
+          path="/signin" 
+          element={isAuthenticated ? <Navigate to="/home" /> : <SignInScreen />} 
+        />
+        <Route 
+          path="/signup" 
+          element={isAuthenticated ? <Navigate to="/home" /> : <SignUpScreen />} 
+        />
+        
+        {/* Aquí, el usuario será redirigido a /signin si no está autenticado */}
+        <Route 
+          path="/recuperar" 
+          element={isAuthenticated ? <RecuperarScreen /> : <Navigate to="/signin" />} 
+        />
+        <Route 
+          path="/movimientos" 
+          element={isAuthenticated ? <MovimientosScreen /> : <Navigate to="/signin" />} 
+        />
+        <Route 
+          path="/categorias" 
+          element={isAuthenticated ? <CategoriasScreen /> : <Navigate to="/signin" />} 
+        />
+        
+        {/* Página principal, solo accesible si el usuario está autenticado */}
+        <Route 
+          path="/home" 
+          element={isAuthenticated ? <HomeScreen /> : <Navigate to="/signin" />} 
+        />
+        <Route path="/confirmar" element={<ConfirmarScreen />} />
       </Routes>
     </BrowserRouter>
   );
