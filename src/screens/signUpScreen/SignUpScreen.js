@@ -26,7 +26,7 @@ export const SignUpScreen=()=>{
             <div className='signIn__form--container'>
                 <h2 style={{marginTop:"20px"}}>Crear Cuenta</h2>
                 <Form  noValidate validated={validated} onSubmit={handleSubmit}>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Group className="mb-3" controlId="formBasicName">
                         <Form.Label>Nombre</Form.Label>
                         <Form.Control required type="text" placeholder="Juan Perez" />
                         <Form.Control.Feedback type="invalid">

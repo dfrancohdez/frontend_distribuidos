@@ -61,7 +61,7 @@ export const CategoriasScreen = () => {
           },
         ],
       };
-      const options = {
+      const optionsGrafica = {
         responsive: true,
         plugins: {
           legend: {
@@ -97,7 +97,7 @@ export const CategoriasScreen = () => {
                 <div className="row">
                     <div className="movimientos__grafica--container col">
                         <h5>Categorias</h5>
-                        <Pie data={data} options={options}/>
+                        <Pie data={data} options={optionsGrafica}/>
                     </div>
                     <div className="movimientos__tabla--container col" >
                         <h5>Movimientos Por categoria</h5>

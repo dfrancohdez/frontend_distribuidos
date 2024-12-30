@@ -2,17 +2,44 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button';
 import { useState } from 'react';
 import logo from '../../assets/icono.JPG'
-import './_signInScreen.scss'
+
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-export const SignInScreen = () => {
+
+import { signIn } from "aws-amplify/auth"
+import { CognitoUserPool, CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
+import { COGNITO_CONFIG } from '../../settings/cognito';
+import { saveTokens } from '../../settings/auth';
+
+import './_signInScreen.scss'
+
+
+import { Amplify } from 'aws-amplify';
+/*
+Amplify.configure({
+  Auth: {
+    Cognito: {
+      userPoolClientId: '1u4qitkrivvodl36bk3mlv7pte',
+      userPoolId: 'us-east-1_4m9l7dn6T'
+    }}
+});*/
+
+  const userPool = new CognitoUserPool(COGNITO_CONFIG);
+
+export const SignInScreen = ({ setIsAuthenticated }) => {
     const navigate = useNavigate();
     const crearCuenta = ()=> {
         navigate("/signup");
       }
     const [validated, setValidated] = useState(false);
+    const [error, setError] = useState(null);
 
-  const handleSubmit = (event) => {
+
+
+    //amplify
+    /*const handleSubmit = async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -20,7 +47,73 @@ export const SignInScreen = () => {
     }
 
     setValidated(true);
-  };
+    //inicio de session
+    const {formBasicEmail,formBasicPassword}=form
+    try {
+        const data = await signIn({
+            username: formBasicEmail.value,
+            password: formBasicPassword.value})
+        
+        console.log('Usuario autenticado:', data);
+      } catch (err) {
+        setError(err.message);
+        console.error('Error en inicio de sesión:', err);
+      }
+  };*/
+    //cognito
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+    
+        setValidated(true);
+        //inicio de session
+        const {formBasicEmail,formBasicPassword}=form
+        try {
+            const username=formBasicEmail.value
+            const password=formBasicPassword.value
+
+            const authenticationDetails = new AuthenticationDetails({
+              Username: username,
+              Password: password,
+            });
+      
+            const userData = {
+              Username: username,
+              Pool: userPool,
+            };
+      
+            const cognitoUser = new CognitoUser(userData);
+      
+            const result=await new Promise((resolve, reject) => {
+              cognitoUser.authenticateUser(authenticationDetails, {
+                onSuccess: (result) => {
+                  console.log('Token de ID:', result.getIdToken().getJwtToken());
+                  console.log('Token de acceso:', result.getAccessToken().getJwtToken());
+                  
+                  resolve(result);
+                },
+                onFailure: (err) => {
+                  reject(err);
+                },
+              });
+            });
+            saveTokens({
+                idToken: result.getIdToken().getJwtToken(),
+                accessToken: result.getAccessToken().getJwtToken(),
+                username:username
+              });
+            setIsAuthenticated(true);
+
+            navigate('/home');
+          } catch (err) {
+            setError(err.message || 'Error durante el inicio de sesión');
+          }
+      };
 
     return (
         <div className='signIn__container'>
