@@ -84,9 +84,7 @@ function App() {
           <Route
             path="/recuperar"
             element={
-              <PrivateRoute>
                 <RecuperarScreen />
-              </PrivateRoute>
             }
           />
           <Route
