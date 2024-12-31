@@ -1,6 +1,6 @@
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button';
-import { useState } from 'react';
+import { useState,useContext } from 'react';
 import logo from '../../assets/icono.JPG'
 
 import { Link } from "react-router-dom";
@@ -10,7 +10,7 @@ import { signIn } from "aws-amplify/auth"
 import { CognitoUserPool, CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 import { COGNITO_CONFIG } from '../../settings/cognito';
 import { saveTokens } from '../../settings/auth';
-
+import { AuthContext } from '../AuthProvider';
 import './_signInScreen.scss'
 
 
@@ -27,6 +27,7 @@ Amplify.configure({
   const userPool = new CognitoUserPool(COGNITO_CONFIG);
 
 export const SignInScreen = ({ setIsAuthenticated }) => {
+  const { handleSignIn } = useContext(AuthContext);
     const navigate = useNavigate();
     const crearCuenta = ()=> {
         navigate("/signup");
@@ -61,7 +62,7 @@ export const SignInScreen = ({ setIsAuthenticated }) => {
       }
   };*/
     //cognito
-    const handleSubmit = async (event) => {
+    /*const handleSubmit = async (event) => {
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
@@ -103,7 +104,7 @@ export const SignInScreen = ({ setIsAuthenticated }) => {
                   });
                   setIsAuthenticated(true);
                   window.location.href = window.location.href;
-                  
+                  navigate("/")
                     
                 },
                 onFailure: (err) => {
@@ -118,13 +119,13 @@ export const SignInScreen = ({ setIsAuthenticated }) => {
           } catch (err) {
             setError(err.message || 'Error durante el inicio de sesión');
           }
-      };
+      };*/
 
     return (
         <div className='signIn__container'>
             <div className='signIn__form--container'>
                 <h2 style={{marginTop:"20px"}}>Iniciar Sesión</h2>
-                <Form  noValidate validated={validated} onSubmit={handleSubmit}>
+                <Form  noValidate validated={validated} onSubmit={handleSignIn}>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Correo electronico</Form.Label>
                         <Form.Control required type="email" placeholder="name@example.com" />

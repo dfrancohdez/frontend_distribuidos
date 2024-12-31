@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { CognitoUserPool } from 'amazon-cognito-identity-js';
 import { COGNITO_CONFIG } from '../../settings/cognito'; // Tu configuración de Cognito  
+import { toast } from "react-toastify";
 export const SignUpScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -68,9 +69,13 @@ export const SignUpScreen = () => {
                   }
                 );
               });
-      
+            
             const data = await signUpPromise();
             console.log('Usuario registrado con éxito:', data);
+            toast.success("Usuario creado, revisa tu correo.", {
+                position: "bottom-center",
+                
+              });
             //alert('Verifica tu correo electrónico para confirmar tu cuenta.');
             // Redirigir al usuario a la página de inicio de sesión o realizar cualquier acción adicional
             navigate("/confirmar")
@@ -78,6 +83,10 @@ export const SignUpScreen = () => {
           } catch (err) {
             setError(err.message || 'Ocurrió un error al registrar al usuario.');
             console.error('Error en el registro:', err);
+            toast.error(err.message, {
+                position: "bottom-center",
+                                  
+            });
           }
 
 

@@ -1,12 +1,13 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from '../../settings/auth';  // Sign-out de LocalStorage
 import { getToken } from '../../settings/auth';  // Sign-out de LocalStorage
 import { CognitoUser,CognitoUserPool } from 'amazon-cognito-identity-js';
 import { COGNITO_CONFIG } from '../../settings/cognito'; // Para obtener los datos del pool
-
+import { AuthContext } from '../AuthProvider';
 
 export const HomeScreen=()=>{
+    const { handleSignOut } = useContext(AuthContext);
     const navigate = useNavigate();
 
     console.log(getToken("username"))
@@ -17,7 +18,7 @@ export const HomeScreen=()=>{
         Pool: userPool // Usando el User Pool configurado
     });
 
-    const handleSignOut = () => {
+    /*const handleSignOut = () => {
         // Eliminar los tokens del navegador
         signOut();
         
@@ -26,7 +27,7 @@ export const HomeScreen=()=>{
     
         // Redirigir al login después de cerrar sesión
         navigate('/signin');
-      };
+      };*/
     
     return(
         <div>
